@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import '../services/auth_service.dart';
 import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -21,25 +22,44 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _login() {
-    if (_formKey.currentState?.validate() ?? false) {
-      // Si el formulario es válido, proceder con la navegación a HomeScreen
-      final email = _emailController.text;
-      final password = _passwordController.text;
+  void _login() async {
+  if (_formKey.currentState?.validate() ?? false) {
+    final email = _emailController.text;
+    final password = _passwordController.text;
 
-      // Aquí iría la lógica de autenticación, por ahora simulamos que es correcto
+    try {
+      // Llama al servicio de autenticación
+      final authService = AuthService();
+      final response = await authService.login(email, password);
+      //Guardar Token y user_id en local storage
+    
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', response['access_token']);
+      final userResponse = response['userResponse'];
+      await prefs.setInt('user_id', userResponse['id']);
+    
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
+      
+    
+      // Si el login es exitoso, navega a la pantalla HomeScreen
+     
+    } catch (e) {
+      // Muestra el error al usuario
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
     }
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Iniciar Sesión'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -58,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 30),
               const Text(
-                'Bienvenido, por favor ingresa tus datos.',
+                'Bienvenido',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
@@ -68,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: const InputDecoration(
                   labelText: 'Correo Electrónico',
                   border: OutlineInputBorder(),
+                  hoverColor: Colors.blue
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -97,8 +118,9 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _login,
-                child: const Text('Iniciar Sesión'),
+                child: const Text('Iniciar Sesión',style: TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   minimumSize: const Size(double.infinity, 50),
                 ),

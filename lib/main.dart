@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       // Aquí es donde configuramos la pantalla inicial como LoginScreen
+      debugShowCheckedModeBanner: false,
       home: const LoginScreen(), // Asegúrate de que esta sea la pantalla inicial
     );
   }

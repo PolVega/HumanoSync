@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:humanosync_tf/configuracion_screen.dart';
 import 'package:humanosync_tf/faq_screen.dart';
 import 'package:humanosync_tf/quienes_somos_screen.dart';
+import 'package:humanosync_tf/robot_screen.dart';
 import 'login_screen.dart'; // Asegúrate de importar LoginScreen
 
 class HomeScreen extends StatelessWidget {
@@ -11,7 +12,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('RepetiBot'),
+        backgroundColor: Colors.blue,
+        title: const Text('RepetiBot', style: TextStyle(color: Colors.white)),
       ),
       drawer: Drawer(
         child: ListView(
@@ -19,7 +21,7 @@ class HomeScreen extends StatelessWidget {
           children: <Widget>[
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.deepPurple,
+                color: Colors.blue,
               ),
               child: Text(
                 'Menú Principal',
@@ -28,6 +30,15 @@ class HomeScreen extends StatelessWidget {
                   fontSize: 24,
                 ),
               ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Inicio'),
+              onTap: () {
+                Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomeScreen())
+                ); // Cerrar el drawer
+              },
             ),
             ListTile(
               leading: const Icon(Icons.question_answer),
@@ -55,7 +66,7 @@ class HomeScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RobotScreen()),
+                  MaterialPageRoute(builder: (context) => const RobotListScreen()),
                 );
               },
             ),
@@ -83,7 +94,10 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: SingleChildScrollView( // Usamos SingleChildScrollView para hacer scroll si es necesario
+      body:Container(
+        height: MediaQuery.of(context).size.height,
+        color: Colors.white,
+        child:  SingleChildScrollView( // Usamos SingleChildScrollView para hacer scroll si es necesario
         child: Column(
           children: <Widget>[
             const Padding(
@@ -101,6 +115,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   // Card 1
                   Card(
+                    color: Colors.blue,
                     elevation: 5,
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: ListTile(
@@ -113,15 +128,17 @@ class HomeScreen extends StatelessWidget {
                       ),
                       title: const Text(
                         'Actualización 1: Mejoras en la autonomía',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                       subtitle: const Text(
                         'Nuestro robot ahora puede operar durante 12 horas continuas gracias a una mejora en la batería.',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
                   // Card 2
                   Card(
+                    color: Colors.blue,
                     elevation: 5,
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: ListTile(
@@ -134,15 +151,17 @@ class HomeScreen extends StatelessWidget {
                       ),
                       title: const Text(
                         'Actualización 2: Reconocimiento facial',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
                       ),
                       subtitle: const Text(
                         'Ahora el robot puede reconocer y saludar a los usuarios de manera personalizada.',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
                   // Card 3
                   Card(
+                    color: Colors.blue,
                     elevation: 5,
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: ListTile(
@@ -155,10 +174,12 @@ class HomeScreen extends StatelessWidget {
                       ),
                       title: const Text(
                         'Actualización 3: Nueva interfaz de usuario',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold
+                        ,color: Colors.white),
                       ),
                       subtitle: const Text(
                         'La interfaz del robot ha sido rediseñada para ser más intuitiva y fácil de usar.',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
@@ -168,22 +189,9 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class RobotScreen extends StatelessWidget {
-  const RobotScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ver Robot'),
-      ),
-      body: const Center(
-        child: Text('Aquí mostramos información sobre el robot.'),
       ),
     );
   }
 }
+
+
